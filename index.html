@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri Audio Syair</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --bg-soft: #181818;
+      --panel: #212121;
+      --panel-2: #272727;
+      --panel-border: #343434;
+      --text: #f1f1f1;
+      --muted: #aaaaaa;
+      --red: #ff3030;
+      --red-soft: #ff4e45;
+      --track: #3a3a3a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 48, 48, 0.12), transparent 28%),
+        linear-gradient(180deg, #131313 0%, #0f0f0f 100%);
+      color: var(--text);
+      padding: 34px 22px 56px;
+    }
+
+    .wrapper {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .title {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: clamp(2rem, 3vw, 3rem);
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0 0 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .audio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .audio-card {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      min-height: 178px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #242424 0%, #1b1b1b 100%);
+      border: 1px solid var(--panel-border);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+      position: relative;
+    }
+
+    .lyrics-link {
+      background: linear-gradient(180deg, #2e2e2e 0%, #1f1f1f 100%);
+      border-right: 1px solid var(--panel-border);
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      padding: 12px 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lyrics-link:hover {
+      background: linear-gradient(180deg, #3a3a3a 0%, #282828 100%);
+      color: #ffffff;
+    }
+
+    .audio-body {
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    .name-window {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 10px 14px;
+    }
+
+    .audio-name {
+      display: inline-block;
+      white-space: nowrap;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      padding-right: 36px;
+      animation: marquee 9s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-55%); }
+    }
+
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--red-soft);
+      box-shadow: 0 0 18px rgba(255, 78, 69, 0.8);
+      flex-shrink: 0;
+    }
+
+    .progress {
+      width: 100%;
+      appearance: none;
+      height: 5px;
+      border-radius: 999px;
+      background: linear-gradient(to right, var(--red) 0%, var(--red) var(--progress, 0%), var(--track) var(--progress, 0%), var(--track) 100%);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress::-webkit-slider-thumb {
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 0;
+      box-shadow: 0 0 0 3px rgba(255, 48, 48, 0.15);
+    }
+
+    .progress::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 0;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .play-btn {
+      width: 58px;
+      height: 58px;
+      border: 0;
+      border-radius: 50%;
+      background: linear-gradient(180deg, var(--red-soft) 0%, #d31313 100%);
+      box-shadow: 0 10px 24px rgba(255, 48, 48, 0.35);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.18s ease;
+    }
+
+    .play-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .play-btn::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-35%, -50%);
+      width: 0;
+      height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 18px solid #ffffff;
+    }
+
+    .play-btn.is-playing::before {
+      width: 16px;
+      height: 20px;
+      border: 0;
+      background: linear-gradient(to right, #ffffff 0 5px, transparent 5px 11px, #ffffff 11px 16px);
+      transform: translate(-50%, -50%);
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .card-number {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .audio-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 14px 42px;
+      }
+
+      .audio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrapper">
+    <h1 class="title">Syair Audio</h1>
+    <p class="subtitle">Tampilan gelap bergaya YouTube dengan pemutar audio dan halaman lirik terpisah.</p>
+
+    <section class="audio-grid">
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-1.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Ya halla bikum</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Ya halla bikum"></button>
+            <span class="status">Syair 1</span>
+          </div>
+          <span class="card-number">01</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576241/Ya_halla_eux9mx.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-2.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Ya Maljaiy</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Ya Maljaiy"></button>
+            <span class="status">Syair 2</span>
+          </div>
+          <span class="card-number">02</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576222/Ya_Maljaiy___%D9%8A%D8%A7_%D9%85%D9%84%D8%AC%D8%A6%D9%8A_%D8%A3%D8%BA%D8%AB_%D8%A3%D9%82%D8%B5%D8%A7%D9%86%D8%A7_-_%D9%85%D8%AD%D9%85%D8%AF_%D9%8A%D8%A7%D8%B3%D9%8A%D9%86_%D8%A7%D9%84%D9%85%D8%B1%D8%B9%D8%B4%D9%84%D9%8A_khazbu.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-3.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Hubbu rasul</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Hubbu rasul"></button>
+            <span class="status">Syair 3</span>
+          </div>
+          <span class="card-number">03</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576197/Hubbu_rasul_vi5g3e.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-4.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Sirri ladaiha</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Sirri ladaiha"></button>
+            <span class="status">Syair 4</span>
+          </div>
+          <span class="card-number">04</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576217/Sirri_ladaiha_h2bj6u.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-5.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Madad ya maulana</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Madad ya maulana"></button>
+            <span class="status">Syair 5</span>
+          </div>
+          <span class="card-number">05</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576205/Madad_ya_maulana_wxox1u.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-6.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Bossu ala anwar nabina</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Bossu ala anwar nabina"></button>
+            <span class="status">Syair 6</span>
+          </div>
+          <span class="card-number">06</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576154/Bossu_ala_anwar_nabina_tf0hbh.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-7.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Bahibbak waridak</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Bahibbak waridak"></button>
+            <span class="status">Syair 7</span>
+          </div>
+          <span class="card-number">07</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576167/Bahibbak_waridak_uxekxe.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-8.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Khalleha ala allah</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Khalleha ala allah"></button>
+            <span class="status">Syair 8</span>
+          </div>
+          <span class="card-number">08</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774576125/Khalleha_ala_allah_w0ucz7.mp3"></audio>
+        </div>
+      </article>
+
+      <article class="audio-card" data-audio-card>
+        <a class="lyrics-link" href="lirik-9.html" onclick="return openLyrics(event, this.href)">Lirik<br>Syair</a>
+        <div class="audio-body">
+          <div class="name-window"><div class="audio-name">Salatuna alan nabi</div></div>
+          <div class="progress-wrap">
+            <span class="progress-dot"></span>
+            <input class="progress" type="range" min="0" max="100" value="0">
+          </div>
+          <div class="card-footer">
+            <button class="play-btn" type="button" aria-label="Putar audio Salatuna alan nabi"></button>
+            <span class="status">Syair 9</span>
+          </div>
+          <span class="card-number">09</span>
+          <audio src="https://res.cloudinary.com/dyd30ds04/video/upload/v1774579798/%D8%B5%D9%84%D8%A7%D8%AA%D9%86%D8%A7_%D8%B9%D9%84%D9%89_%D8%A7%D9%84%D9%86%D8%A8%D9%8A_-_%D8%AC%D9%84_%D9%85%D9%86_%D9%82%D8%AF_%D8%B5%D9%88%D8%B1%D9%83_-_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D9%84%D9%87_%D8%A7%D9%84%D8%B9%D8%AA%D9%8A%D9%82_-_%D9%8A%D8%A7_%D8%A7%D9%85%D8%A7%D9%85_%D8%A7%D9%84%D8%B1%D8%B3%D9%84_-_%D8%A3%D9%85_%D8%A7%D9%84%D9%86%D8%A8%D9%8A___Al_Marashli_Ensemble_wlbzjb.mp3"></audio>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const cards = document.querySelectorAll("[data-audio-card]");
+
+    function openLyrics(event, url) {
+      event.preventDefault();
+      const lyricsWindow = window.open(url, "_blank");
+      if (lyricsWindow) {
+        lyricsWindow.focus();
+      }
+      return false;
+    }
+
+    function stopOtherAudios(currentAudio) {
+      cards.forEach((card) => {
+        const audio = card.querySelector("audio");
+        const button = card.querySelector(".play-btn");
+        if (audio !== currentAudio) {
+          audio.pause();
+          button.classList.remove("is-playing");
+        }
+      });
+    }
+
+    cards.forEach((card) => {
+      const audio = card.querySelector("audio");
+      const button = card.querySelector(".play-btn");
+      const progress = card.querySelector(".progress");
+      button.addEventListener("click", () => {
+        if (audio.paused) {
+          stopOtherAudios(audio);
+          audio.play().catch(() => {
+            alert("File audio belum tersedia atau gagal dimuat.");
+          });
+          button.classList.add("is-playing");
+        } else {
+          audio.pause();
+          button.classList.remove("is-playing");
+        }
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        if (!audio.duration) return;
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progress.value = percent;
+        progress.style.setProperty("--progress", percent + "%");
+      });
+
+      progress.addEventListener("input", () => {
+        if (!audio.duration) return;
+        audio.currentTime = (progress.value / 100) * audio.duration;
+        progress.style.setProperty("--progress", progress.value + "%");
+      });
+
+      audio.addEventListener("ended", () => {
+        button.classList.remove("is-playing");
+        progress.value = 0;
+        progress.style.setProperty("--progress", "0%");
+      });
+
+      progress.style.setProperty("--progress", "0%");
+    });
+  </script>
+</body>
+</html>

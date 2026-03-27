@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lirik Audio 2</title>
+  <style>
+    body { margin: 0; min-height: 100vh; font-family: Arial, Helvetica, sans-serif; background: radial-gradient(circle at top, rgba(255, 48, 48, 0.12), transparent 24%), #0f0f0f; color: #f1f1f1; padding: 34px 18px; }
+    .page { max-width: 860px; margin: 0 auto; background: rgba(33, 33, 33, 0.92); border: 1px solid #343434; border-radius: 24px; padding: 28px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35); }
+    .back { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #ffffff; background: linear-gradient(180deg, #ff4e45 0%, #d31313 100%); padding: 10px 16px; border-radius: 999px; font-weight: 700; }
+    h1 { margin: 0 0 10px; font-size: 2rem; }
+    .subtitle { margin: 0 0 22px; color: #aaaaaa; }
+    .lyrics { white-space: pre-line; direction: rtl; text-align: right; line-height: 2.2; font-size: clamp(1.15rem, 2.2vw, 1.45rem); font-family: "Amiri", "Noto Naskh Arabic", Tahoma, Arial, sans-serif; background: rgba(128, 128, 128, 0.16); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 18px; padding: 22px; }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <a class="back" href="index.html" onclick="return handleBack(event)">Kembali</a>
+    <h1>Ya Maljaiy</h1>
+    <p class="subtitle">Halaman lirik syair 2</p>
+    <div class="lyrics">للّٰهُ اللّٰهُ رَبِّي يَا عَظِيمَ الْجَاهْ
+وَمَنْ لَا يَغْفِرُ الذَّنْبَ سِوَاهْ
+يَا مَلْجَئِي يَا مَلْجَئِي
+
+يَا رَحِيمُ يَا رَحِيمْ
+رُوحِي قَدْ هَالَهَا
+حِجَابٌ مِنْ ذُنُوبْ
+يَا عَظِيمَ الْكَرَمْ
+
+أَسْمَى أَسْمَى مَعَانِي الْحُبِّ وَأَسْمَى
+وِصَالٍ لِلْحَبِيبْ
+أَخَافُ أَنْ يَغِيبْ
+
+تَوْبَتِي تَوْبَتِي تُحْيِيْنِي
+فِي بَابِ الْخُشُوْع
+مَا أَحْلَى الرُّجُوعْ
+بِدُمُوعِ النَّدَمْ
+
+فَرْحَتِي فَرْحَتِي بِالْأُنْسِ أَثْنَاءَ السُّجُودْ
+وَأَحْوَالِ الشُّهُودْ
+هِيَ أَغْلَى النِّعَمْ
+
+أَسْمَى أَسْمَى مَعَانِي الْحُبِّ وَأَسْمَى
+وِصَالًا لِلْحَبِيبْ
+أَخَافُ أَنْ يَغِيبْ
+
+اللّٰهُ اللّٰهُ رَبِّي يَا عَظِيمَ الْجَاهْ
+وَمَنْ لَا يَغْفِرُ الذَّنْبَ سِوَاهْ
+يَا مَلْجَئِي يَا مَلْجَئِي</div>
+  </section>
+  <script>
+    function handleBack(event) {
+      if (window.opener && !window.opener.closed) {
+        event.preventDefault();
+        window.opener.focus();
+        window.close();
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
