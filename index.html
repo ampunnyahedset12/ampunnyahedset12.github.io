@@ -15,6 +15,7 @@
       --muted: #aaaaaa;
       --red: #ff3030;
       --red-soft: #ff4e45;
+      --spotify-green: #1db954;
       --track: #3a3a3a;
     }
 
@@ -30,7 +31,7 @@
         radial-gradient(circle at top, rgba(255, 48, 48, 0.12), transparent 28%),
         linear-gradient(180deg, #131313 0%, #0f0f0f 100%);
       color: var(--text);
-      padding: 34px 22px 56px;
+      padding: 34px 22px 150px;
     }
 
     .wrapper {
@@ -52,6 +53,85 @@
       font-size: 1rem;
     }
 
+    .spotify-playlist {
+      margin: 8px 0 0;
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #1a1a1a 0%, #121212 100%);
+      border: 1px solid #2a2a2a;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+    }
+
+    .playlist-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 14px;
+    }
+
+    .playlist-title {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .playlist-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .playlist-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      max-height: 270px;
+      overflow: auto;
+    }
+
+    .playlist-item {
+      border: 1px solid #2e2e2e;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .playlist-item:hover {
+      background: #232323;
+      border-color: #3a3a3a;
+    }
+
+    .playlist-item.is-active {
+      border-color: rgba(29, 185, 84, 0.55);
+      background: rgba(29, 185, 84, 0.15);
+    }
+
+    .playlist-index {
+      color: #c5c5c5;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .playlist-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 700;
+    }
+
+    .playlist-state {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
     .audio-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(280px, 1fr));
@@ -59,12 +139,20 @@
     }
 
     .notice {
-      margin-top: 36px;
+      margin-top: 16px;
       border-radius: 22px;
       background: linear-gradient(180deg, #1d1d1d 0%, #141414 100%);
       border: 1px solid var(--panel-border);
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
       overflow: hidden;
+    }
+
+    .notice + .notice {
+      margin-top: 0;
+    }
+
+    .notice.tanbih-section {
+      margin-bottom: 26px;
     }
 
     .notice-toggle {
@@ -192,6 +280,18 @@
       gap: 10px;
     }
 
+    .duration-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -8px;
+    }
+
+    .duration-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
     .progress-dot {
       width: 9px;
       height: 9px;
@@ -278,6 +378,10 @@
       font-size: 0.92rem;
     }
 
+    .status.is-queued {
+      color: #ffb16e;
+    }
+
     .card-number {
       position: absolute;
       right: 16px;
@@ -287,9 +391,140 @@
       font-weight: 700;
     }
 
+    .spotify-player {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      background: #0d0d0d;
+      border-top: 1px solid #2a2a2a;
+      padding: 10px 16px;
+      display: grid;
+      grid-template-columns: 1.1fr 1.6fr 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .player-track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .player-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--spotify-green);
+      box-shadow: 0 0 12px rgba(29, 185, 84, 0.8);
+      flex-shrink: 0;
+    }
+
+    .player-meta {
+      min-width: 0;
+    }
+
+    .player-name {
+      margin: 0;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 700;
+    }
+
+    .player-status {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .player-center {
+      display: grid;
+      gap: 8px;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .player-btn {
+      border: 0;
+      background: #252525;
+      color: #efefef;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .player-btn.is-active {
+      background: var(--spotify-green);
+      color: #07170f;
+    }
+
+    .player-btn.main {
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .player-progress {
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .player-seek,
+    .player-volume {
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: #4a4a4a;
+      cursor: pointer;
+    }
+
+    .player-seek::-webkit-slider-thumb,
+    .player-volume::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 0;
+    }
+
+    .player-side {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
     @media (max-width: 980px) {
       .audio-grid {
         grid-template-columns: repeat(2, minmax(280px, 1fr));
+      }
+
+      .spotify-player {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .player-side {
+        justify-content: flex-start;
       }
     }
 
@@ -308,6 +543,25 @@
   <main class="wrapper">
     <h1 class="title">Syair Audio</h1>
     <p class="subtitle">Tampilan gelap bergaya YouTube dengan pemutar audio dan halaman lirik terpisah.</p>
+
+    <section class="notice tanbih-section">
+      <button class="notice-toggle" id="playlist-toggle" type="button" aria-expanded="false" aria-controls="playlist-panel" onclick="togglePanel('playlist-toggle','playlist-panel')">
+        <span class="notice-label">
+          <span>Playlist</span>
+          <span class="notice-arabic">قَائِمَةُ التَّشْغِيل</span>
+        </span>
+        <span class="notice-arrow">▼</span>
+      </button>
+      <div class="notice-panel" id="playlist-panel">
+        <section class="spotify-playlist">
+          <div class="playlist-heading">
+            <h2 class="playlist-title">Playlist Syair</h2>
+            <span class="playlist-subtitle" id="playlist-current">Belum ada lagu dipilih</span>
+          </div>
+          <ul class="playlist-list" id="playlist-list"></ul>
+        </section>
+      </div>
+    </section>
 
     <section class="audio-grid">
       <article class="audio-card" data-audio-card>
@@ -465,7 +719,7 @@
     </section>
 
     <section class="notice">
-      <button class="notice-toggle" type="button" aria-expanded="false" aria-controls="notice-panel" onclick="toggleNotice()">
+      <button class="notice-toggle" id="notice-toggle" type="button" aria-expanded="false" aria-controls="notice-panel" onclick="togglePanel('notice-toggle','notice-panel')">
         <span class="notice-label">
           <span>Tanbih</span>
           <span class="notice-arabic">تَنْبِيه</span>
@@ -518,12 +772,54 @@
     </section>
   </main>
 
-  <script>
-    const cards = document.querySelectorAll("[data-audio-card]");
+  <footer class="spotify-player">
+    <div class="player-track">
+      <span class="player-dot"></span>
+      <div class="player-meta">
+        <p class="player-name" id="player-name">Belum ada lagu dipilih</p>
+        <span class="player-status" id="player-status">Siap diputar</span>
+      </div>
+    </div>
+    <div class="player-center">
+      <div class="player-controls">
+        <button class="player-btn" id="shuffle-btn" type="button" onclick="toggleShuffle()">↻</button>
+        <button class="player-btn" type="button" onclick="playPrevious()">⏮</button>
+        <button class="player-btn main" id="player-main-btn" type="button" onclick="toggleMainPlay()">▶</button>
+        <button class="player-btn" type="button" onclick="playNext()">⏭</button>
+        <button class="player-btn" id="repeat-btn" type="button" onclick="toggleRepeat()">↺</button>
+      </div>
+      <div class="player-progress">
+        <span id="player-time-current">0:00</span>
+        <input class="player-seek" id="player-seek" type="range" min="0" max="100" value="0">
+        <span id="player-time-total">0:00</span>
+      </div>
+    </div>
+    <div class="player-side">
+      <span>Volume</span>
+      <input class="player-volume" id="player-volume" type="range" min="0" max="100" value="100">
+    </div>
+  </footer>
 
-    function toggleNotice() {
-      const button = document.querySelector(".notice-toggle");
-      const panel = document.getElementById("notice-panel");
+  <script>
+    const cards = Array.from(document.querySelectorAll("[data-audio-card]"));
+    const playlistList = document.getElementById("playlist-list");
+    const playerName = document.getElementById("player-name");
+    const playerStatus = document.getElementById("player-status");
+    const mainBtn = document.getElementById("player-main-btn");
+    const seekbar = document.getElementById("player-seek");
+    const timeCurrent = document.getElementById("player-time-current");
+    const timeTotal = document.getElementById("player-time-total");
+    const volumeSlider = document.getElementById("player-volume");
+    const shuffleBtn = document.getElementById("shuffle-btn");
+    const repeatBtn = document.getElementById("repeat-btn");
+
+    let currentIndex = -1;
+    let isShuffle = false;
+    let repeatMode = "off"; // off | all | one
+
+    function togglePanel(buttonId, panelId) {
+      const button = document.getElementById(buttonId);
+      const panel = document.getElementById(panelId);
       const isOpen = button.getAttribute("aria-expanded") === "true";
 
       button.setAttribute("aria-expanded", String(!isOpen));
@@ -539,14 +835,171 @@
       return false;
     }
 
-    function stopOtherAudios(currentAudio) {
-      cards.forEach((card) => {
+    function formatTime(sec) {
+      if (!Number.isFinite(sec) || sec < 0) return "0:00";
+      const minutes = Math.floor(sec / 60);
+      const seconds = Math.floor(sec % 60);
+      return minutes + ":" + String(seconds).padStart(2, "0");
+    }
+
+    function getAudio(i) {
+      return cards[i]?.querySelector("audio") || null;
+    }
+
+    function getTrackName(i) {
+      return cards[i]?.querySelector(".audio-name")?.textContent.trim() || "Belum ada lagu dipilih";
+    }
+
+    function setCardStatus(card, text) {
+      card.querySelector(".status").textContent = text;
+    }
+
+    function stopAll(exceptIndex = -1) {
+      cards.forEach((card, index) => {
         const audio = card.querySelector("audio");
-        const button = card.querySelector(".play-btn");
-        if (audio !== currentAudio) {
+        const playBtn = card.querySelector(".play-btn");
+        if (index !== exceptIndex) {
           audio.pause();
-          button.classList.remove("is-playing");
+          playBtn.classList.remove("is-playing");
+          setCardStatus(card, "Syair " + card.querySelector(".card-number").textContent);
         }
+      });
+    }
+
+    function highlightPlaylist() {
+      Array.from(playlistList.children).forEach((li, i) => {
+        li.classList.toggle("is-active", i === currentIndex);
+        li.querySelector(".playlist-state").textContent = i === currentIndex ? "Now playing" : "";
+      });
+    }
+
+    function updatePlayerMeta(statusText = "Siap diputar") {
+      if (currentIndex < 0) {
+        playerName.textContent = "Belum ada lagu dipilih";
+        document.getElementById("playlist-current").textContent = "Belum ada lagu dipilih";
+      } else {
+        const name = getTrackName(currentIndex);
+        playerName.textContent = name;
+        document.getElementById("playlist-current").textContent = name;
+      }
+      playerStatus.textContent = statusText;
+    }
+
+    function pickNextIndex() {
+      if (cards.length === 0) return -1;
+      if (repeatMode === "one" && currentIndex >= 0) return currentIndex;
+      if (isShuffle) return Math.floor(Math.random() * cards.length);
+      if (currentIndex < cards.length - 1) return currentIndex + 1;
+      return repeatMode === "all" ? 0 : -1;
+    }
+
+    function pickPrevIndex() {
+      if (cards.length === 0) return -1;
+      if (isShuffle) return Math.floor(Math.random() * cards.length);
+      if (currentIndex > 0) return currentIndex - 1;
+      return repeatMode === "all" ? cards.length - 1 : 0;
+    }
+
+    function updateMainButton(isPlaying) {
+      mainBtn.textContent = isPlaying ? "❚❚" : "▶";
+    }
+
+    function syncSeekFromAudio(audio) {
+      if (!audio || !audio.duration) return;
+      const percent = (audio.currentTime / audio.duration) * 100;
+      seekbar.value = percent;
+      timeCurrent.textContent = formatTime(audio.currentTime);
+      timeTotal.textContent = formatTime(audio.duration);
+    }
+
+    function playIndex(index) {
+      if (index < 0 || index >= cards.length) return;
+      const card = cards[index];
+      const audio = card.querySelector("audio");
+      const playBtn = card.querySelector(".play-btn");
+
+      stopAll(index);
+      currentIndex = index;
+      highlightPlaylist();
+      updatePlayerMeta("Sedang diputar");
+
+      audio.play().then(() => {
+        playBtn.classList.add("is-playing");
+        setCardStatus(card, "Sedang diputar");
+        updateMainButton(true);
+      }).catch(() => {
+        updatePlayerMeta("Gagal memutar");
+      });
+    }
+
+    function toggleMainPlay() {
+      if (currentIndex === -1) {
+        playIndex(0);
+        return;
+      }
+      const audio = getAudio(currentIndex);
+      const button = cards[currentIndex].querySelector(".play-btn");
+      if (audio.paused) {
+        audio.play();
+        button.classList.add("is-playing");
+        setCardStatus(cards[currentIndex], "Sedang diputar");
+        updateMainButton(true);
+        updatePlayerMeta("Sedang diputar");
+      } else {
+        audio.pause();
+        button.classList.remove("is-playing");
+        setCardStatus(cards[currentIndex], "Dijeda");
+        updateMainButton(false);
+        updatePlayerMeta("Dijeda");
+      }
+    }
+
+    function playNext() {
+      const nextIndex = pickNextIndex();
+      if (nextIndex !== -1) {
+        playIndex(nextIndex);
+      } else {
+        updateMainButton(false);
+        updatePlayerMeta("Playlist selesai");
+      }
+    }
+
+    function playPrevious() {
+      const prevIndex = pickPrevIndex();
+      if (prevIndex !== -1) {
+        playIndex(prevIndex);
+      }
+    }
+
+    function toggleShuffle() {
+      isShuffle = !isShuffle;
+      shuffleBtn.classList.toggle("is-active", isShuffle);
+    }
+
+    function toggleRepeat() {
+      if (repeatMode === "off") {
+        repeatMode = "all";
+      } else if (repeatMode === "all") {
+        repeatMode = "one";
+      } else {
+        repeatMode = "off";
+      }
+      repeatBtn.classList.toggle("is-active", repeatMode !== "off");
+      repeatBtn.textContent = repeatMode === "one" ? "1" : "↺";
+    }
+
+    function renderPlaylist() {
+      playlistList.innerHTML = "";
+      cards.forEach((card, index) => {
+        const li = document.createElement("li");
+        li.className = "playlist-item";
+        li.innerHTML = `
+          <span class="playlist-index">${String(index + 1).padStart(2, "0")}</span>
+          <span class="playlist-name">${card.querySelector(".audio-name").textContent.trim()}</span>
+          <span class="playlist-state"></span>
+        `;
+        li.addEventListener("click", () => playIndex(index));
+        playlistList.appendChild(li);
       });
     }
 
@@ -554,17 +1007,22 @@
       const audio = card.querySelector("audio");
       const button = card.querySelector(".play-btn");
       const progress = card.querySelector(".progress");
+      const durationRow = document.createElement("div");
+      durationRow.className = "duration-row";
+      const durationLabel = document.createElement("span");
+      durationLabel.className = "duration-label";
+      durationLabel.textContent = "Durasi: 0:00";
+      durationRow.appendChild(durationLabel);
+      progress.parentElement.insertAdjacentElement("afterend", durationRow);
+
       button.addEventListener("click", () => {
-        if (audio.paused) {
-          stopOtherAudios(audio);
-          audio.play().catch(() => {
-            alert("File audio belum tersedia atau gagal dimuat.");
-          });
-          button.classList.add("is-playing");
-        } else {
-          audio.pause();
-          button.classList.remove("is-playing");
+        const index = cards.indexOf(card);
+        if (currentIndex !== index) {
+          playIndex(index);
+          return;
         }
+
+        toggleMainPlay();
       });
 
       audio.addEventListener("timeupdate", () => {
@@ -572,22 +1030,64 @@
         const percent = (audio.currentTime / audio.duration) * 100;
         progress.value = percent;
         progress.style.setProperty("--progress", percent + "%");
+        if (cards[currentIndex] === card) {
+          syncSeekFromAudio(audio);
+        }
       });
 
       progress.addEventListener("input", () => {
         if (!audio.duration) return;
         audio.currentTime = (progress.value / 100) * audio.duration;
         progress.style.setProperty("--progress", progress.value + "%");
+        if (cards[currentIndex] === card) {
+          syncSeekFromAudio(audio);
+        }
       });
 
       audio.addEventListener("ended", () => {
-        button.classList.remove("is-playing");
         progress.value = 0;
         progress.style.setProperty("--progress", "0%");
+        button.classList.remove("is-playing");
+        if (cards[currentIndex] === card) {
+          playNext();
+        }
+      });
+
+      audio.addEventListener("loadedmetadata", () => {
+        if (audio.duration) {
+          durationLabel.textContent = "Durasi: " + formatTime(audio.duration);
+        }
       });
 
       progress.style.setProperty("--progress", "0%");
+      setCardStatus(card, "Syair " + card.querySelector(".card-number").textContent);
     });
+
+    seekbar.addEventListener("input", () => {
+      if (currentIndex === -1) return;
+      const audio = getAudio(currentIndex);
+      if (!audio.duration) return;
+      audio.currentTime = (seekbar.value / 100) * audio.duration;
+      syncSeekFromAudio(audio);
+    });
+
+    volumeSlider.addEventListener("input", () => {
+      const volume = volumeSlider.value / 100;
+      cards.forEach((card) => {
+        card.querySelector("audio").volume = volume;
+      });
+    });
+
+    renderPlaylist();
+    updatePlayerMeta("Siap diputar");
+    updateMainButton(false);
+
+    // Pindahkan Tanbih ke atas agar sejajar dengan tombol Playlist.
+    const noticeSection = document.querySelectorAll("section.notice")[1];
+    const audioGrid = document.querySelector("section.audio-grid");
+    if (noticeSection && audioGrid) {
+      audioGrid.parentNode.insertBefore(noticeSection, audioGrid);
+    }
   </script>
 </body>
 </html>
